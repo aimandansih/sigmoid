@@ -1,32 +1,50 @@
+
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
 
-st.set_page_config(page_title="Sigmoid Activation Function")
+# Streamlit page configuration
+st.set_page_config(
+    page_title="Sigmoid Activation Function",
+    layout="wide"
+)
 
 st.title("Sigmoid Activation Function")
-st.write("Visualisation of the Sigmoid function.")
+st.write("Visualisation of the Sigmoid activation function.")
 
 # Generate input values
 x = np.linspace(-6, 6, 400)
 
-# Sigmoid function
-y = 1 / (1 + np.exp(-x))
+# Sigmoid activation function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+y = sigmoid(x)
+
+# Display formula
+st.subheader("Mathematical Formula")
+st.latex(r"f(x) = \frac{1}{1+e^{-x}}")
+
+# Create DataFrame
+df = pd.DataFrame({
+    "Input (x)": x,
+    "Sigmoid Output": y
+})
 
 # Plot graph
-fig, ax = plt.subplots()
-ax.plot(x, y, label="Sigmoid", linewidth=2)
+st.subheader("Sigmoid Activation Function Graph")
 
-ax.axhline(0, color="black", linewidth=0.5)
-ax.axvline(0, color="black", linewidth=0.5)
+st.line_chart(
+    df.set_index("Input (x)")
+)
 
-ax.set_title("Sigmoid Activation Function")
-ax.set_xlabel("Input (x)")
-ax.set_ylabel("Output f(x)")
-ax.set_ylim(-0.1, 1.1)
-ax.grid(True)
-ax.legend()
+# Explanation
+st.subheader("Explanation")
 
-st.pyplot(fig)
+st.write("""
+Sigmoid converts input values into an output range
+between 0 and 1.
 
-st.write("Formula: f(x) = 1 / (1 + exp(-x))")
+It produces an S-shaped curve and is commonly used
+for binary classification problems.
+""")
